@@ -1,5 +1,5 @@
 # Dockerfile
-FROM php:8.0-apache
+FROM php:8.3.0-apache
 
 # Instala las extensiones pdo_pgsql para PHP y otras extensiones comunes
 RUN apt-get update && apt-get install -y --fix-missing \
