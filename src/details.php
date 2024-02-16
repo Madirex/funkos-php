@@ -38,8 +38,8 @@ if ($id === false) {
     <?php include 'head_styles.php'; ?>
 </head>
 <body>
-<div class="container">
     <?php require_once 'header.php'; ?>
+<div class="container">
 
     <h1>Detalles del Funko</h1>
     <dl class="row">

@@ -14,10 +14,7 @@ require_once __DIR__ . '/services/SessionService.php';
 
 $session = SessionService::getInstance();
 if (!$session->isAdmin()) {
-    echo "<script type='text/javascript'>
-            alert('No tienes permisos para eliminar un funko');
-            window.location.href = 'index.php';
-          </script>";
+    header("Location: index.php?error=permission");
     exit;
 }
 

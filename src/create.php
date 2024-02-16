@@ -16,10 +16,7 @@ require_once __DIR__ . '/services/CategoriesService.php';
 
 $session = SessionService::getInstance();
 if (!$session->isAdmin()) {
-    echo "<script type='text/javascript'>
-            alert('No tienes permisos para crear un Funko');
-            window.location.href = 'index.php';
-          </script>";
+    header("Location: index.php?error=permission");
     exit;
 }
 
@@ -69,10 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Guardamos el funko
         try {
             $funkosService->save($funko);
-            echo "<script type='text/javascript'>
-                alert('Funko creado correctamente');
-                window.location.href = 'index.php';
-                </script>";
+            header("Location: index.php?error=permission");
+            exit;
         } catch (Exception $e) {
             $error = 'Error en el sistema. Por favor intente más tarde.';
         }
@@ -89,8 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include 'head_styles.php'; ?>
 </head>
 <body>
-<div class="container">
     <?php require_once 'header.php'; ?>
+<div class="container">
     <h1>Crear Funko</h1>
 
     <form action="create.php" method="post">

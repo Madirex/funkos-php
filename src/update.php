@@ -16,10 +16,7 @@ require_once __DIR__ . '/models/Funko.php';
 
 $session = SessionService::getInstance();
 if (!$session->isAdmin()) {
-    echo "<script type='text/javascript'>
-            alert('No tienes permisos para modificar un Funko');
-            window.location.href = 'index.php';
-          </script>";
+    header("Location: index.php?error=permission");
     exit;
 }
 
@@ -35,11 +32,7 @@ $funkoId = -1;
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $funkoId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
     if (!$funkoId) {
-        echo "<script type='text/javascript'>
-            alert('No se proporcionó un ID de Funko');
-            window.location.href = 'index.php';
-          </script>";
-        header('Location: index.php');
+        echo "<div class='error-banner' id='errorBanner'>No se proporcionó un id de un Funko</div>";
         exit;
     }
 
@@ -115,8 +108,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include 'head_styles.php'; ?>
 </head>
 <body>
-<div class="container">
     <?php require_once 'header.php'; ?>
+<div class="container">
     <h1>Actualizar Funko</h1>
 
     <form action="update.php" method="post">

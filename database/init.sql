@@ -20,7 +20,7 @@ CREATE TABLE "public"."funkos"
     "category_id" uuid,
     "uuid"        uuid                                              NOT NULL,
     "description" character varying(255),
-    "image"       text             DEFAULT 'https://via.placeholder.com/150',
+    "image"       text             DEFAULT 'images/favicon.ico',
     CONSTRAINT "funkos_pkey" PRIMARY KEY ("id"),
     CONSTRAINT "funkos_uuid_key" UNIQUE ("uuid")
 ) WITH (oids = false);
@@ -29,19 +29,19 @@ INSERT INTO "funkos" ("is_deleted", "price", "stock", "created_at", "id", "updat
                       "description", "image")
 VALUES ('f', 10.99, 5, '2023-11-02 11:43:24.722473', 1, '2023-11-02 11:43:24.722473',
         'd69cf3db-b77d-4181-b3cd-5ca8107fb6a9', '19135792-b778-441f-871e-d6e6096e0ddc', 'Funko Batman',
-        'https://via.placeholder.com/150'),
+        'images/batman.png'),
        ('f', 19.99, 10, '2023-11-03 09:21:17.835912', 2, '2023-11-03 09:21:17.835912',
         '6dbcbf5e-8e1c-47cc-8578-7b0a33ebc154', '662ed342-de99-45c6-8463-446989aab9c8', 'Funko Iron Man',
-        'https://via.placeholder.com/150'),
+        'images/ironman.png'),
        ('f', 15.99, 2, '2023-11-04 15:07:59.123456', 3, '2023-11-04 15:07:59.123456',
         'd69cf3db-b77d-4181-b3cd-5ca8107fb6a9', 'b79182ad-91c3-46e8-90b9-268164596a72', 'Funko Spider-Man',
-        'https://via.placeholder.com/150'),
+        'images/spiderman.png'),
        ('f', 25.99, 8, '2023-11-05 18:36:42.987654', 4, '2023-11-05 18:36:42.987654',
         '6dbcbf5e-8e1c-47cc-8578-7b0a33ebc154', '4fa72b3f-dca2-4fd8-b803-dffacf148c10', 'Funko Darth Vader',
-        'https://via.placeholder.com/150'),
+        'images/darthvader.png'),
        ('f', 12.99, 3, '2023-11-06 12:45:33.567890', 5, '2023-11-06 12:45:33.567890',
         '6dbcbf5e-8e1c-47cc-8578-7b0a33ebc154', '1e2584d8-db52-45da-b2d6-4203637ea78e', 'Funko Harry Potter',
-        'https://via.placeholder.com/150');
+        'images/harry.png');
 
 
 CREATE TABLE "public"."user_roles"

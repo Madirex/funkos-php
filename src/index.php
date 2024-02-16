@@ -21,12 +21,37 @@ $session = $sessionService = SessionService::getInstance();
     <?php include 'head_styles.php'; ?>
 </head>
 <body>
-<div class="container">
     <?php require_once 'header.php'; ?>
+<div class="container">
 
     <?php
     echo "<h1>{$session->getWelcomeMessage()}</h1>";
     $config = Config::getInstance();
+
+    // Mostrar el banner de error si el usuario no tiene permisos de administrador
+    if (isset($_GET['error']) && $_GET['error'] === 'permission') {
+        echo '<div class="error-banner" id="errorBanner">
+<span class="close-btn" onclick="closeBanner()">&times;</span>
+        No tienes permisos para realizar esta acción
+    </div>
+    ';
+
+    // Agregar JavaScript para cerrar el banner después de cierto tiempo y con animación
+    echo "<script>
+            function closeBanner() {
+                var banner = document.getElementById('errorBanner');
+                banner.style.animation = 'slideOut 0.5s ease-in';
+                setTimeout(function() {
+                    banner.style.display = 'none';
+                }, 450);
+            }
+            
+            // Ocultar el banner después de 5 segundos
+            setTimeout(function() {
+                closeBanner();
+            }, 5000); // 5000 milisegundos = 5 segundos
+          </script>";
+    }
     ?>
 
     <form action="index.php" class="mb-3" method="get">
@@ -70,11 +95,8 @@ $session = $sessionService = SessionService::getInstance();
                        href="update.php?id=<?php echo $funko->id; ?>">Editar</a>
                     <a class="btn btn-info btn-sm"
                        href="update-image.php?id=<?php echo $funko->id; ?>">Imagen</a>
-                    <a class="btn btn-danger btn-sm"
-                       href="delete.php?id=<?php echo $funko->id; ?>"
-                       onclick="return confirm('¿Estás seguro de que deseas eliminar este Funko?');">
-                        Eliminar
-                    </a>
+                       <?php $deleteLink = $session->isAdmin() ? "delete.php?id={$funko->id}&confirm=1" : "index.php?error=permission"; ?>
+                        <a class="btn btn-danger btn-sm" href="<?php echo $deleteLink; ?>" <?php if ($session->isAdmin()) echo "onclick=\"return confirm('¿Estás seguro de que deseas eliminar este Funko?');\""; ?>>Eliminar</a>
                 </td>
             </tr>
         <?php endforeach; ?>

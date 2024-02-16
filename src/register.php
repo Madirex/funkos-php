@@ -63,8 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="container" style="width: 50%; margin-left: auto; margin-right: auto;">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/">
-            <img alt="Logo" class="d-inline-block align-text-top" height="30" src="/images/favicon.ico" width="30">
-            Funkos CRUD - Madirex
+            <img alt="Logo" class="d-inline-block align-text-top" height="30" src="/images/funkos.bmp" width="30">
+            Funkos Madirex
         </a>
     </nav>
     <h1>Registro</h1>
