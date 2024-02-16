@@ -56,6 +56,7 @@ $session = $sessionService = SessionService::getInstance();
     <form action="index.php" class="mb-3" method="get">
         <div class="input-group">
             <div class="input-group-append">
+                <input class="form-control" name="search" placeholder="Buscar..." type="text">
                 <button class="btn btn-primary" type="submit">Buscar</button>
             </div>
         </div>

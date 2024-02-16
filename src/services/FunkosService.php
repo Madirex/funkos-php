@@ -33,10 +33,17 @@ class FunkosService
     public function findAllWithCategoryName($searchTerm = null)
     {
         $sql = "SELECT p.*, c.name AS category_name FROM funkos p LEFT JOIN categories c ON p.category_id = c.id";
+
+        if ($searchTerm) {
+            $sql .= " WHERE LOWER(p.description) LIKE LOWER(:searchTerm)";
+        }
+
         $sql .= " ORDER BY p.id ASC";
+
         $stmt = $this->pdo->prepare($sql);
 
         if ($searchTerm) {
+            $searchTerm = "%$searchTerm%";
             $stmt->bindValue(':searchTerm', $searchTerm, PDO::PARAM_STR);
         }
 
