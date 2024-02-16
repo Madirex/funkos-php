@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-group">
             <label for="description">Descripción:</label>
             <textarea class="form-control" id="description" name="description"
-                      required><?php echo htmlspecialchars($funko->description); ?></textarea>
+                      required><?php echo htmlspecialchars($funko->description, ENT_QUOTES, 'UTF-8'); ?></textarea>
             <?php if (isset($errors['description'])): ?>
                 <small class="text-danger"><?php echo $errors['description']; ?></small>
             <?php endif; ?>
@@ -126,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-group">
             <label for="price">Precio:</label>
             <input class="form-control" id="price" min="0.0" name="price" step="0.01" type="number" required
-                   value="<?php echo htmlspecialchars($funko->price); ?>">
+                   value="<?php echo htmlspecialchars($funko->price, ENT_QUOTES, 'UTF-8'); ?>">
             <?php if (isset($errors['price'])): ?>
                 <small class="text-danger"><?php echo $errors['price']; ?></small>
             <?php endif; ?>
@@ -134,12 +134,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-group">
             <label for="image">Imagen:</label>
             <input class="form-control" id="image" name="image" readonly type="text"
-                   value="<?php echo htmlspecialchars($funko->image); ?>">
+                   value="<?php echo htmlspecialchars($funko->image, ENT_QUOTES, 'UTF-8'); ?>">
         </div>
         <div class="form-group">
             <label for="stock">Stock:</label>
             <input class="form-control" id="stock" min="0" name="stock" type="number" required
-                   value="<?php echo htmlspecialchars($funko->stock); ?>">
+                   value="<?php echo htmlspecialchars($funko->stock, ENT_QUOTES, 'UTF-8'); ?>">
             <?php if (isset($errors['stock'])): ?>
                 <small class="text-danger"><?php echo $errors['stock']; ?></small>
             <?php endif; ?>
@@ -149,8 +149,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select class="form-control" id="category" name="category" required>
                 <option value="">Seleccione una categoría</option>
                 <?php foreach ($categories as $cat): ?>
-                    <option value="<?php echo htmlspecialchars($cat->name); ?>" <?php if ($cat->nombre == $funko->categoryName) echo 'selected'; ?>>
-                        <?php echo htmlspecialchars($cat->name); ?>
+                    <option value="<?php echo htmlspecialchars($cat->name, ENT_QUOTES, 'UTF-8'); ?>" <?php if ($cat->name == $funko->categoryName) echo 'selected'; ?>>
+                        <?php echo htmlspecialchars($cat->name, ENT_QUOTES, 'UTF-8'); ?>
                     </option>
                 <?php endforeach; ?>
             </select>

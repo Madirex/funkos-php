@@ -60,31 +60,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include 'head_styles.php'; ?>
 </head>
 <body>
-<div class="container" style="width: 50%; margin-left: auto; margin-right: auto;">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">
-            <img alt="Logo" class="d-inline-block align-text-top" height="30" src="/images/funkos.bmp" width="30">
-            Funkos Madirex
-        </a>
-    </nav>
+<?php require_once 'header.php'; ?>
+<div class="container" style="width: 50%; margin-left: auto; margin-right: auto; margin-top: 40px; margin-bottom: 40px;">
     <h1>Registro</h1>
     <form action="register.php" method="post">
         <div class="form-group">
             <label for="username">Usuario:</label>
-            <input class="form-control" id="username" name="username" required type="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>">
+            <input class="form-control" id="username" name="username" required type="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
             <label for="password">Contraseña:</label>
             <input class="form-control" id="password" name="password" required type="password" value="">
             <label for="repeatPassword">Repetir contraseña:</label>
             <input class="form-control" id="repeatPassword" name="repeatPassword" required type="password" value="">
             <label for="name">Nombre:</label>
-            <input class="form-control" id="name" name="name" required type="name" value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>">
+            <input class="form-control" id="name" name="name" required type="name" value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8') : ''; ?>">
             <label for="surnames">Apellidos:</label>
-            <input class="form-control" id="surnames" name="surnames" required type="surnames" value="<?php echo isset($_POST['surnames']) ? htmlspecialchars($_POST['surnames']) : ''; ?>">
+            <input class="form-control" id="surnames" name="surnames" required type="surnames" value="<?php echo isset($_POST['surnames']) ? htmlspecialchars($_POST['surnames'], ENT_QUOTES, 'UTF-8') : ''; ?>">
             <label for="email">Email:</label>
-            <input class="form-control" id="email" name="email" required type="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
+            <input class="form-control" id="email" name="email" required type="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8') : ''; ?>">
         </div>
         <?php if ($error): ?>
-            <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
+            <p style="color: red;"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
         <?php endif; ?>
         <button class="btn btn-primary" type="submit">Registrarse</button>
     </form>

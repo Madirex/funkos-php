@@ -22,8 +22,7 @@ $session = $sessionService = SessionService::getInstance();
 </head>
 <body>
     <?php require_once 'header.php'; ?>
-<div class="container">
-
+<div class="container" style="margin-top: 40px; margin-bottom: 40px;">
     <?php
     echo "<h1>{$session->getWelcomeMessage()}</h1>";
     $config = Config::getInstance();
@@ -66,6 +65,7 @@ $session = $sessionService = SessionService::getInstance();
         <thead>
         <tr>
             <th>ID</th>
+            <th>Descripción</th>
             <th>Precio</th>
             <th>Stock</th>
             <th>Imagen</th>
@@ -81,22 +81,24 @@ $session = $sessionService = SessionService::getInstance();
         ?>
         <?php foreach ($funkos as $funko): ?>
             <tr>
-                <td><?php echo htmlspecialchars($funko->id); ?></td>
-                <td><?php echo htmlspecialchars($funko->price); ?></td>
-                <td><?php echo htmlspecialchars($funko->stock); ?></td>
+                <td><?php echo htmlspecialchars($funko->id, ENT_QUOTES, 'UTF-8'); ?></td>
+                <td><?php echo htmlspecialchars($funko->description, ENT_QUOTES, 'UTF-8'); ?></td>
+                <td><?php echo htmlspecialchars($funko->price, ENT_QUOTES, 'UTF-8'); ?></td>
+                <td><?php echo htmlspecialchars($funko->stock, ENT_QUOTES, 'UTF-8'); ?></td>
                 <td>
                     <img alt="Imagen del funko" height="50"
-                         src="<?php echo htmlspecialchars($funko->image); ?>" width="50">
+                         src="<?php echo htmlspecialchars($funko->image, ENT_QUOTES, 'UTF-8'); ?>" width="50">
                 </td>
                 <td>
-                    <a class="btn btn-primary btn-sm"
+                    <a class="btn btn-primary btn-sm" style="min-width: 80px;"
                        href="details.php?id=<?php echo $funko->id; ?>">Detalles</a>
-                    <a class="btn btn-secondary btn-sm"
+                    <a class="btn btn-secondary btn-sm" style="min-width: 80px;"
                        href="update.php?id=<?php echo $funko->id; ?>">Editar</a>
-                    <a class="btn btn-info btn-sm"
+                    <a class="btn btn-info btn-sm" style="min-width: 80px;"
                        href="update-image.php?id=<?php echo $funko->id; ?>">Imagen</a>
                        <?php $deleteLink = $session->isAdmin() ? "delete.php?id={$funko->id}&confirm=1" : "index.php?error=permission"; ?>
-                        <a class="btn btn-danger btn-sm" href="<?php echo $deleteLink; ?>" <?php if ($session->isAdmin()) echo "onclick=\"return confirm('¿Estás seguro de que deseas eliminar este Funko?');\""; ?>>Eliminar</a>
+                        <a class="btn btn-danger btn-sm" style="min-width: 80px;"
+                        href="<?php echo $deleteLink; ?>" <?php if ($session->isAdmin()) echo "onclick=\"return confirm('¿Estás seguro de que deseas eliminar este Funko?');\""; ?>>Eliminar</a>
                 </td>
             </tr>
         <?php endforeach; ?>

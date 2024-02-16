@@ -44,18 +44,18 @@ if ($id === false) {
     <h1>Detalles del Funko</h1>
     <dl class="row">
         <dt class="col-sm-2">ID:</dt>
-        <dd class="col-sm-10"><?php echo htmlspecialchars($funko->id); ?></dd>
+        <dd class="col-sm-10"><?php echo htmlspecialchars($funko->id, ENT_QUOTES, 'UTF-8'); ?></dd>
         <dt class="col-sm-2">Descripción:</dt>
-        <dd class="col-sm-10"><?php echo htmlspecialchars($funko->description); ?></dd>
+        <dd class="col-sm-10"><?php echo htmlspecialchars($funko->description, ENT_QUOTES, 'UTF-8'); ?></dd>
         <dt class="col-sm-2">Precio:</dt>
-        <dd class="col-sm-10"><?php echo htmlspecialchars($funko->price); ?></dd>
+        <dd class="col-sm-10"><?php echo htmlspecialchars($funko->price, ENT_QUOTES, 'UTF-8'); ?></dd>
         <dt class="col-sm-2">Imagen:</dt>
         <dd class="col-sm-10"><img alt="Funko Image" class="img-fluid"
-                                   src="<?php echo htmlspecialchars($funko->image); ?>"></dd>
+                                   src="<?php echo htmlspecialchars($funko->image, ENT_QUOTES, 'UTF-8'); ?>"></dd>
         <dt class="col-sm-2">Stock:</dt>
-        <dd class="col-sm-10"><?php echo htmlspecialchars($funko->stock); ?></dd>
+        <dd class="col-sm-10"><?php echo htmlspecialchars($funko->stock, ENT_QUOTES, 'UTF-8'); ?></dd>
         <dt class="col-sm-2">Categoría:</dt>
-        <dd class="col-sm-10"><?php echo htmlspecialchars($funko->categoryName); ?></dd>
+        <dd class="col-sm-10"><?php echo htmlspecialchars($funko->categoryName, ENT_QUOTES, 'UTF-8'); ?></dd>
     </dl>
     <a class="btn btn-primary" href="index.php">Volver</a>
 </div>

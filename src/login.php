@@ -48,13 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include 'head_styles.php'; ?>
 </head>
 <body>
-<div class="container" style="width: 50%; margin-left: auto; margin-right: auto;">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">
-            <img alt="Logo" class="d-inline-block align-text-top" height="30" src="/images/funkos.bmp" width="30">
-            Funkos Madirex
-        </a>
-    </nav>
+<?php require_once 'header.php'; ?>
+<div class="container" style="width: 50%; margin-left: auto; margin-right: auto; margin-top: 40px; margin-bottom: 40px;">
     <h1>Login</h1>
     <form action="login.php" method="post">
         <div class="form-group">
@@ -64,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input class="form-control" id="password" name="password" required type="password">
         </div>
         <?php if ($error): ?>
-            <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
+            <p style="color: red;"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
         <?php endif; ?>
         <button class="btn btn-primary" type="submit">Login</button>
     </form>

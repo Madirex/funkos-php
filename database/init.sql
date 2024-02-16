@@ -20,7 +20,7 @@ CREATE TABLE "public"."funkos"
     "category_id" uuid,
     "uuid"        uuid                                              NOT NULL,
     "description" character varying(255),
-    "image"       text             DEFAULT 'images/favicon.ico',
+    "image"       text             DEFAULT 'images/funkos.bmp',
     CONSTRAINT "funkos_pkey" PRIMARY KEY ("id"),
     CONSTRAINT "funkos_uuid_key" UNIQUE ("uuid")
 ) WITH (oids = false);

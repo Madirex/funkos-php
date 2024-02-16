@@ -35,7 +35,7 @@ $username = $session->isLoggedIn() ? $session->getUserName() : 'Invitado';
                             </li>';
                         }else{
                             echo '<div class="nav-username">';
-                            echo htmlspecialchars($username);
+                            echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8');
                             echo '</div>';
                         }
                     ?>

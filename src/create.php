@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <?php require_once 'header.php'; ?>
-<div class="container">
+<div class="container" style="margin-top: 40px; margin-bottom: 40px;">
     <h1>Crear Funko</h1>
 
     <form action="create.php" method="post">
@@ -120,8 +120,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select class="form-control" id="category" name="category" required>
                 <option value="">Seleccione una categoría</option>
                 <?php foreach ($categories as $cat): ?>
-                    <option value="<?php echo htmlspecialchars($cat->name); ?>">
-                        <?php echo htmlspecialchars($cat->name); ?>
+                    <option value="<?php echo htmlspecialchars($cat->name, ENT_QUOTES, 'UTF-8'); ?>">
+                        <?php echo htmlspecialchars($cat->name, ENT_QUOTES, 'UTF-8'); ?>
                     </option>
                 <?php endforeach; ?>
             </select>
