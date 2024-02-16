@@ -46,7 +46,7 @@ if ($id === false) {
         <dt class="col-sm-2">ID:</dt>
         <dd class="col-sm-10"><?php echo htmlspecialchars($funko->id, ENT_QUOTES, 'UTF-8'); ?></dd>
         <dt class="col-sm-2">Descripción:</dt>
-        <dd class="col-sm-10"><?php echo htmlspecialchars($funko->description, ENT_QUOTES, 'UTF-8'); ?></dd>
+        <dd class="col-sm-10"><?php echo htmlspecialchars_decode($funko->description); ?></dd>
         <dt class="col-sm-2">Precio:</dt>
         <dd class="col-sm-10"><?php echo htmlspecialchars($funko->price, ENT_QUOTES, 'UTF-8'); ?></dd>
         <dt class="col-sm-2">Imagen:</dt>

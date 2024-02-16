@@ -83,7 +83,7 @@ $session = $sessionService = SessionService::getInstance();
         <?php foreach ($funkos as $funko): ?>
             <tr>
                 <td><?php echo htmlspecialchars($funko->id, ENT_QUOTES, 'UTF-8'); ?></td>
-                <td><?php echo htmlspecialchars($funko->description, ENT_QUOTES, 'UTF-8'); ?></td>
+                <td><?php echo htmlspecialchars_decode($funko->description); ?></td>
                 <td><?php echo htmlspecialchars($funko->price, ENT_QUOTES, 'UTF-8'); ?></td>
                 <td><?php echo htmlspecialchars($funko->stock, ENT_QUOTES, 'UTF-8'); ?></td>
                 <td>
