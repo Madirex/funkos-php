@@ -74,6 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'Error en el sistema. Por favor intente más tarde.';
             echo "<div class='error-banner' id='errorBanner'>$error</div>";
         }
+    } else {
+        echo "<div class='error-banner' id='errorBanner'>Error: " . implode(', ', $errors) . "</div>";
     }
 }
 ?>
