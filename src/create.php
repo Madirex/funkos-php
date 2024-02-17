@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Guardamos el funko
         try {
             $funkosService->save($funko);
-            header("Location: index.php?error=permission");
+            header("Location: index.php?created=true");
             exit;
         } catch (Exception $e) {
             $error = 'Error en el sistema. Por favor intente más tarde.';
