@@ -130,9 +130,17 @@ class CategoriesService
      */
     public function update($category)
     {
+        $nameTrimmed = trim($category->name);
+        
         $stmt = $this->pdo->prepare("UPDATE categories SET name = :name, updated_at = :updated_at WHERE id = :id");
+
+        //comprobar que no haya categoría con mismo nombre
+        $categoryByName = $this->findByName($nameTrimmed);
+        if ($categoryByName) {
+            return false;
+        }
     
-        $stmt->bindValue(':name', $category->name, PDO::PARAM_STR);
+        $stmt->bindValue(':name', $nameTrimmed, PDO::PARAM_STR);
         $category->updatedAt = date('Y-m-d H:i:s');
         $stmt->bindValue(':updated_at', $category->updatedAt, PDO::PARAM_STR);
         $stmt->bindValue(':id', $category->id, PDO::PARAM_STR);
@@ -147,13 +155,20 @@ class CategoriesService
      */
     public function save($category)
     {
+        $nameTrimmed = trim($category->name);
+
         $sql = "INSERT INTO categories (id, name, created_at, updated_at)
             VALUES (:id, :name, :created_at, :updated_at)";
 
-        $stmt = $this->pdo->prepare($sql);
+        //comprobar que no haya categoría con mismo nombre
+        $categoryByName = $this->findByName($nameTrimmed);
+        if ($categoryByName) {
+            return false;
+        }
 
+        $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':id', $category->id, PDO::PARAM_STR);
-        $stmt->bindValue(':name', $category->name, PDO::PARAM_STR);
+        $stmt->bindValue(':name', $nameTrimmed, PDO::PARAM_STR);
         $category->createdAt = date('Y-m-d H:i:s');
         $stmt->bindValue(':created_at', $category->createdAt, PDO::PARAM_STR);
         $category->updatedAt = date('Y-m-d H:i:s');
