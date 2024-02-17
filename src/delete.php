@@ -41,9 +41,6 @@ if ($id === false) {
             }
         }
         $funkosService->deleteById($id);
-        echo "<script type='text/javascript'>
-                alert('Funko eliminado correctamente');
-                window.location.href = 'index.php';
-                </script>";
+        header("Location: index.php?removed=true");
     }
 }

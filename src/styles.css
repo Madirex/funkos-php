@@ -24,9 +24,22 @@ div.nav-username{
 }
 
 
-/* banner de error */
+/* banners */
 .error-banner {
     background-color: #f44336;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    animation: slideIn 0.5s ease-out;
+}
+
+.info-banner {
+    background-color: #2196F3;
     color: white;
     padding: 15px 20px;
     border-radius: 5px;

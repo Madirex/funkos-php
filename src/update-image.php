@@ -49,10 +49,10 @@ if ($id === false) {
 
     <dl class="row">
         <dt class="col-sm-2">ID:</dt>
-        <dd class="col-sm-10"><?php echo htmlspecialchars($funko->id, ENT_QUOTES, 'UTF-8'); ?></dd>
+        <dd class="col-sm-10"><?php echo htmlspecialchars_decode($funko->id); ?></dd>
         <dt class="col-sm-2">Imagen:</dt>
         <dd class="col-sm-10"><img alt="Funko Image" class="img-fluid"
-                                   src="<?php echo htmlspecialchars($funko->image, ENT_QUOTES, 'UTF-8'); ?>"></dd>
+                                   src="<?php echo htmlspecialchars_decode($funko->image); ?>"></dd>
     </dl>
 
     <form action="update_image_file.php" enctype="multipart/form-data" method="post">

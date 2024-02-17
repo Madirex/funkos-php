@@ -66,20 +66,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form action="register.php" method="post">
         <div class="form-group">
             <label for="username">Usuario:</label>
-            <input class="form-control" id="username" name="username" required type="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+            <input class="form-control" id="username" name="username" required type="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars_decode($_POST['username']) : ''; ?>">
             <label for="password">Contraseña:</label>
             <input class="form-control" id="password" name="password" required type="password" value="">
             <label for="repeatPassword">Repetir contraseña:</label>
             <input class="form-control" id="repeatPassword" name="repeatPassword" required type="password" value="">
             <label for="name">Nombre:</label>
-            <input class="form-control" id="name" name="name" required type="name" value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+            <input class="form-control" id="name" name="name" required type="name" value="<?php echo isset($_POST['name']) ? htmlspecialchars_decode($_POST['name']) : ''; ?>">
             <label for="surnames">Apellidos:</label>
-            <input class="form-control" id="surnames" name="surnames" required type="surnames" value="<?php echo isset($_POST['surnames']) ? htmlspecialchars($_POST['surnames'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+            <input class="form-control" id="surnames" name="surnames" required type="surnames" value="<?php echo isset($_POST['surnames']) ? htmlspecialchars_decode($_POST['surnames']) : ''; ?>">
             <label for="email">Email:</label>
-            <input class="form-control" id="email" name="email" required type="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+            <input class="form-control" id="email" name="email" required type="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars_decode($_POST['email']) : ''; ?>">
         </div>
         <?php if ($error): ?>
-            <p style="color: red;"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
+            <p style="color: red;"><?php echo htmlspecialchars_decode($error); ?></p>
         <?php endif; ?>
         <button class="btn btn-primary" type="submit">Registrarse</button>
     </form>

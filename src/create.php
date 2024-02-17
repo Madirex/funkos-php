@@ -120,8 +120,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select class="form-control" id="category" name="category" required>
                 <option value="">Seleccione una categoría</option>
                 <?php foreach ($categories as $cat): ?>
-                    <option value="<?php echo htmlspecialchars($cat->name, ENT_QUOTES, 'UTF-8'); ?>">
-                        <?php echo htmlspecialchars($cat->name, ENT_QUOTES, 'UTF-8'); ?>
+                    <option value="<?php echo htmlspecialchars_decode($cat->name); ?>">
+                        <?php echo htmlspecialchars_decode($cat->name); ?>
                     </option>
                 <?php endforeach; ?>
             </select>

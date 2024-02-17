@@ -29,16 +29,32 @@ $session = $sessionService = SessionService::getInstance();
 
     // Mostrar el banner de error si el usuario no tiene permisos de administrador
     if (isset($_GET['error']) && $_GET['error'] === 'permission') {
-        echo '<div class="error-banner" id="errorBanner">
+        echo '<div class="error-banner" id="bannerInfo">
 <span class="close-btn" onclick="closeBanner()">&times;</span>
         No tienes permisos para realizar esta acción
     </div>
-    ';
+    ';}
+
+    // Mostrar el banner de actualización
+    else if (isset($_GET['updated']) && $_GET['updated'] === 'true') {
+        echo '<div class="info-banner" id="bannerInfo">
+<span class="close-btn" onclick="closeBanner()">&times;</span>
+        Elemento actualizado correctamente
+    </div>
+    ';}
+
+    // Mostrar el banner de eliminación
+    else if (isset($_GET['removed']) && $_GET['removed'] === 'true') {
+        echo '<div class="info-banner" id="bannerInfo">
+<span class="close-btn" onclick="closeBanner()">&times;</span>
+        Elemento eliminado correctamente
+    </div>
+    ';}
 
     // Agregar JavaScript para cerrar el banner después de cierto tiempo y con animación
     echo "<script>
             function closeBanner() {
-                var banner = document.getElementById('errorBanner');
+                var banner = document.getElementById('bannerInfo');
                 banner.style.animation = 'slideOut 0.5s ease-in';
                 setTimeout(function() {
                     banner.style.display = 'none';
@@ -50,7 +66,6 @@ $session = $sessionService = SessionService::getInstance();
                 closeBanner();
             }, 5000); // 5000 milisegundos = 5 segundos
           </script>";
-    }
     ?>
 
     <form action="index.php" class="mb-3" method="get">
@@ -82,13 +97,13 @@ $session = $sessionService = SessionService::getInstance();
         ?>
         <?php foreach ($funkos as $funko): ?>
             <tr>
-                <td><?php echo htmlspecialchars($funko->id, ENT_QUOTES, 'UTF-8'); ?></td>
+                <td><?php echo htmlspecialchars_decode($funko->id); ?></td>
                 <td><?php echo htmlspecialchars_decode($funko->description); ?></td>
-                <td><?php echo htmlspecialchars($funko->price, ENT_QUOTES, 'UTF-8'); ?></td>
-                <td><?php echo htmlspecialchars($funko->stock, ENT_QUOTES, 'UTF-8'); ?></td>
+                <td><?php echo htmlspecialchars_decode($funko->price); ?></td>
+                <td><?php echo htmlspecialchars_decode($funko->stock); ?></td>
                 <td>
                     <img alt="Imagen del funko" height="50"
-                         src="<?php echo htmlspecialchars($funko->image, ENT_QUOTES, 'UTF-8'); ?>" width="50">
+                         src="<?php echo htmlspecialchars_decode($funko->image); ?>" width="50">
                 </td>
                 <td>
                     <a class="btn btn-primary btn-sm" style="min-width: 80px;"

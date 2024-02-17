@@ -104,15 +104,15 @@ CREATE TABLE "public"."categories"
 
 INSERT INTO "categories" ("is_deleted", "created_at", "updated_at", "id", "name")
 VALUES ('f', '2023-11-02 11:43:24.717712', '2023-11-02 11:43:24.717712', 'd69cf3db-b77d-4181-b3cd-5ca8107fb6a9',
-        'Superhéroes'),
+        'Superheros'),
        ('f', '2023-11-02 11:43:24.717712', '2023-11-02 11:43:24.717712', '6dbcbf5e-8e1c-47cc-8578-7b0a33ebc154',
-        'Películas'),
+        'Movies'),
        ('f', '2023-11-02 11:43:24.717712', '2023-11-02 11:43:24.717712', '9def16db-362b-44c4-9fc9-77117758b5b0',
-        'Series de TV'),
+        'TV Series'),
        ('f', '2023-11-02 11:43:24.717712', '2023-11-02 11:43:24.717712', '8c5c06ba-49d6-46b6-85cc-8246c0f362bc',
-        'Videojuegos'),
+        'Videogames'),
        ('f', '2023-11-02 11:43:24.717712', '2023-11-02 11:43:24.717712', 'bb51d00d-13fb-4b09-acc9-948185636f79',
-        'Animales');
+        'Animals');
 
 
 ALTER TABLE ONLY "public"."funkos"

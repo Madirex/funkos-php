@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input class="form-control" id="password" name="password" required type="password">
         </div>
         <?php if ($error): ?>
-            <p style="color: red;"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
+            <p style="color: red;"><?php echo htmlspecialchars_decode($error); ?></p>
         <?php endif; ?>
         <button class="btn btn-primary" type="submit">Login</button>
     </form>

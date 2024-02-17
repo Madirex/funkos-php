@@ -88,10 +88,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         try {
             $funkosService->update($funko);
-            echo "<script type='text/javascript'>
-                alert('Funko actualizado correctamente');
-                window.location.href = 'index.php';
-                </script>";
+            header("Location: index.php?updated=true");
+            exit();
         } catch (Exception $e) {
             $error = 'Error en el sistema. Por favor intente más tarde.';
         }
@@ -118,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-group">
             <label for="description">Descripción:</label>
             <textarea class="form-control" id="description" name="description"
-                      required><?php echo htmlspecialchars($funko->description, ENT_QUOTES, 'UTF-8'); ?></textarea>
+                      required><?php echo htmlspecialchars_decode($funko->description); ?></textarea>
             <?php if (isset($errors['description'])): ?>
                 <small class="text-danger"><?php echo $errors['description']; ?></small>
             <?php endif; ?>
@@ -126,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-group">
             <label for="price">Precio:</label>
             <input class="form-control" id="price" min="0.0" name="price" step="0.01" type="number" required
-                   value="<?php echo htmlspecialchars($funko->price, ENT_QUOTES, 'UTF-8'); ?>">
+                   value="<?php echo htmlspecialchars_decode($funko->price); ?>">
             <?php if (isset($errors['price'])): ?>
                 <small class="text-danger"><?php echo $errors['price']; ?></small>
             <?php endif; ?>
@@ -134,12 +132,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-group">
             <label for="image">Imagen:</label>
             <input class="form-control" id="image" name="image" readonly type="text"
-                   value="<?php echo htmlspecialchars($funko->image, ENT_QUOTES, 'UTF-8'); ?>">
+                   value="<?php echo htmlspecialchars_decode($funko->image); ?>">
         </div>
         <div class="form-group">
             <label for="stock">Stock:</label>
             <input class="form-control" id="stock" min="0" name="stock" type="number" required
-                   value="<?php echo htmlspecialchars($funko->stock, ENT_QUOTES, 'UTF-8'); ?>">
+                   value="<?php echo htmlspecialchars_decode($funko->stock); ?>">
             <?php if (isset($errors['stock'])): ?>
                 <small class="text-danger"><?php echo $errors['stock']; ?></small>
             <?php endif; ?>
@@ -149,8 +147,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select class="form-control" id="category" name="category" required>
                 <option value="">Seleccione una categoría</option>
                 <?php foreach ($categories as $cat): ?>
-                    <option value="<?php echo htmlspecialchars($cat->name, ENT_QUOTES, 'UTF-8'); ?>" <?php if ($cat->name == $funko->categoryName) echo 'selected'; ?>>
-                        <?php echo htmlspecialchars($cat->name, ENT_QUOTES, 'UTF-8'); ?>
+                    <option value="<?php echo htmlspecialchars_decode($cat->name); ?>" <?php if ($cat->name == $funko->categoryName) echo 'selected'; ?>>
+                        <?php echo htmlspecialchars_decode($cat->name); ?>
                     </option>
                 <?php endforeach; ?>
             </select>
