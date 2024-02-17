@@ -31,7 +31,7 @@ if ($id === false) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Detalles del Funko</title>

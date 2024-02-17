@@ -26,6 +26,14 @@ $username = $session->isLoggedIn() ? $session->getUserName() : 'Invitado';
                     <a class="nav-link" href="create.php">Nuevo Funko</a>
                 </li>
             </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="index_categories.php">Categorías</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="create_categories.php">Nueva Categoría</a>
+                </li>
+            </ul>
             <ul class="navbar-nav ml-auto" style="flex-direction: column;">
             <li class="nav-item">
                     <?php

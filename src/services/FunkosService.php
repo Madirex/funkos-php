@@ -27,18 +27,18 @@ class FunkosService
 
     /**
      * Devuelve todos los Funkos con el nombre de la categoría
-     * @param null $searchTerm String Término de búsqueda
+     * @param string|null $searchTerm String Término de búsqueda
      * @return array Devuelve un array con todos los funkos
      */
     public function findAllWithCategoryName($searchTerm = null)
     {
-        $sql = "SELECT p.*, c.name AS category_name FROM funkos p LEFT JOIN categories c ON p.category_id = c.id";
+        $sql = "SELECT f.*, c.name AS category_name FROM funkos f LEFT JOIN categories c ON f.category_id = c.id";
 
         if ($searchTerm) {
-            $sql .= " WHERE LOWER(p.description) LIKE LOWER(:searchTerm)";
+            $sql .= " WHERE LOWER(f.description) LIKE LOWER(:searchTerm)";
         }
 
-        $sql .= " ORDER BY p.id ASC";
+        $sql .= " ORDER BY f.id ASC";
 
         $stmt = $this->pdo->prepare($sql);
 
@@ -128,7 +128,6 @@ class FunkosService
      */
     public function update(Funko $funko, bool $updateImage = false)
     {
-
         $sql = "UPDATE funkos SET
             description = :description,
             price = :price,

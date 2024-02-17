@@ -25,11 +25,29 @@ class CategoriesService
 
     /**
      * Devuelve todas las categorías
+     * @param string|null $searchTerm String Término de búsqueda
      * @return array Devuelve un array con todas las categorías
      */
-    public function findAll()
+    public function findAll($searchTerm = null)
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM categories ORDER BY id ASC");
+        $sql = "SELECT c.* FROM categories c";
+
+        if ($searchTerm) {
+            $sql .= " WHERE LOWER(c.name) LIKE LOWER(:searchTerm)";
+            $sql .= " AND c.is_deleted = false";
+        } else{
+            $sql .= " WHERE c.is_deleted = false";
+        }
+
+        $sql .= " ORDER BY c.name ASC";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        if ($searchTerm) {
+            $searchTerm = "%$searchTerm%";
+            $stmt->bindValue(':searchTerm', $searchTerm, PDO::PARAM_STR);
+        }
+
         $stmt->execute();
 
         $categories = [];
@@ -53,8 +71,8 @@ class CategoriesService
      */
     public function findByName($name)
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM categories WHERE name = :name");
-        $stmt->execute(['name' => $name]);
+        $stmt = $this->pdo->prepare("SELECT * FROM categories WHERE LOWER(name) = LOWER(:name)");
+        $stmt->execute(['name' => strtolower($name)]);
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$row) {
@@ -95,13 +113,13 @@ class CategoriesService
     }
 
     /**
-     * Elimina una categoría por ID
+     * Elimina una categoría por ID (borrado lógico)
      * @param $id int ID de la categoría
      * @return bool Devuelve true si se ha eliminado correctamente
      */
     public function deleteById($id)
     {
-        $stmt = $this->pdo->prepare("DELETE FROM categories WHERE id = :id");
+        $stmt = $this->pdo->prepare("UPDATE categories SET is_deleted = true WHERE id = :id");
         return $stmt->execute(['id' => $id]);
     }
 
@@ -113,14 +131,13 @@ class CategoriesService
     public function update($category)
     {
         $stmt = $this->pdo->prepare("UPDATE categories SET name = :name, updated_at = :updated_at WHERE id = :id");
-        
-        $category->setUpdatedAt(date('Y-m-d H:i:s'));
+    
+        $stmt->bindValue(':name', $category->name, PDO::PARAM_STR);
+        $category->updatedAt = date('Y-m-d H:i:s');
+        $stmt->bindValue(':updated_at', $category->updatedAt, PDO::PARAM_STR);
+        $stmt->bindValue(':id', $category->id, PDO::PARAM_STR);
 
-        return $stmt->execute([
-            'id' => $category->getId(),
-            'name' => $category->getName(),
-            'updated_at' => $category->getUpdatedAt(),
-        ]);
+        return $stmt->execute();
     }   
 
     /**
@@ -130,11 +147,18 @@ class CategoriesService
      */
     public function save($category)
     {
-        $stmt = $this->pdo->prepare("INSERT INTO categories (name) VALUES (:name)");
-        $category->setCreatedAt(date('Y-m-d H:i:s'));
-        $category->setUpdatedAt(date('Y-m-d H:i:s'));
-        $stmt->execute(['name' => $category->getName(),
-        'created_at' => $category->getCreatedAt(),
-        'updated_at' => $category->getUpdatedAt()]);
+        $sql = "INSERT INTO categories (id, name, created_at, updated_at)
+            VALUES (:id, :name, :created_at, :updated_at)";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->bindValue(':id', $category->id, PDO::PARAM_STR);
+        $stmt->bindValue(':name', $category->name, PDO::PARAM_STR);
+        $category->createdAt = date('Y-m-d H:i:s');
+        $stmt->bindValue(':created_at', $category->createdAt, PDO::PARAM_STR);
+        $category->updatedAt = date('Y-m-d H:i:s');
+        $stmt->bindValue(':updated_at', $category->updatedAt, PDO::PARAM_STR);
+
+        return $stmt->execute();
     }
 }
