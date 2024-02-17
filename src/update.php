@@ -16,10 +16,7 @@ require_once __DIR__ . '/models/Funko.php';
 
 $session = SessionService::getInstance();
 if (!$session->isAdmin()) {
-    echo "<script type='text/javascript'>
-            alert('No tienes permisos para modificar un Funko');
-            window.location.href = 'index.php';
-          </script>";
+    header("Location: index.php?error=permission");
     exit;
 }
 
@@ -35,11 +32,7 @@ $funkoId = -1;
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $funkoId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
     if (!$funkoId) {
-        echo "<script type='text/javascript'>
-            alert('No se proporcionó un ID de Funko');
-            window.location.href = 'index.php';
-          </script>";
-        header('Location: index.php');
+        echo "<div class='error-banner' id='errorBanner'>No se proporcionó un id de un Funko</div>";
         exit;
     }
 
@@ -47,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $funko = $funkosService->findById($funkoId);
     } catch (Exception $e) {
         $error = 'Error en el sistema. Por favor intente más tarde.';
+        echo "<div class='error-banner' id='errorBanner'>$error</div>";
     }
 
     if (!$funko) {
@@ -56,10 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+    $description = trim(filter_input(INPUT_POST, 'description', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     $stock = filter_input(INPUT_POST, 'stock', FILTER_SANITIZE_NUMBER_INT);
-    $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_STRING);
+    $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $funkoId = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
     $category = $categoriesService->findByName($category);
 
@@ -94,29 +88,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $funko->categoryId = $category->id;
 
         try {
-            $funkosService->update($funko);
-            echo "<script type='text/javascript'>
-                alert('Funko actualizado correctamente');
-                window.location.href = 'index.php';
-                </script>";
+            $funkosService->update($funko ,false);
+            header("Location: index.php?updated=true");
+            exit();
         } catch (Exception $e) {
             $error = 'Error en el sistema. Por favor intente más tarde.';
+            echo "<div class='error-banner' id='errorBanner'>$error</div>";
         }
+    } else {
+        echo "<div class='error-banner' id='errorBanner'>Error: " . implode(', ', $errors) . "</div>";
     }
 }
 ?>
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Actualizar Funko</title>
     <?php include 'head_styles.php'; ?>
 </head>
 <body>
-<div class="container">
     <?php require_once 'header.php'; ?>
+<div class="container">
     <h1>Actualizar Funko</h1>
 
     <form action="update.php" method="post">
@@ -125,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-group">
             <label for="description">Descripción:</label>
             <textarea class="form-control" id="description" name="description"
-                      required><?php echo htmlspecialchars($funko->description); ?></textarea>
+                      required><?php echo htmlspecialchars_decode($funko->description); ?></textarea>
             <?php if (isset($errors['description'])): ?>
                 <small class="text-danger"><?php echo $errors['description']; ?></small>
             <?php endif; ?>
@@ -133,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-group">
             <label for="price">Precio:</label>
             <input class="form-control" id="price" min="0.0" name="price" step="0.01" type="number" required
-                   value="<?php echo htmlspecialchars($funko->price); ?>">
+                   value="<?php echo htmlspecialchars_decode($funko->price); ?>">
             <?php if (isset($errors['price'])): ?>
                 <small class="text-danger"><?php echo $errors['price']; ?></small>
             <?php endif; ?>
@@ -141,12 +136,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-group">
             <label for="image">Imagen:</label>
             <input class="form-control" id="image" name="image" readonly type="text"
-                   value="<?php echo htmlspecialchars($funko->image); ?>">
+                   value="<?php echo htmlspecialchars_decode($funko->image); ?>">
         </div>
         <div class="form-group">
             <label for="stock">Stock:</label>
             <input class="form-control" id="stock" min="0" name="stock" type="number" required
-                   value="<?php echo htmlspecialchars($funko->stock); ?>">
+                   value="<?php echo htmlspecialchars_decode($funko->stock); ?>">
             <?php if (isset($errors['stock'])): ?>
                 <small class="text-danger"><?php echo $errors['stock']; ?></small>
             <?php endif; ?>
@@ -156,8 +151,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select class="form-control" id="category" name="category" required>
                 <option value="">Seleccione una categoría</option>
                 <?php foreach ($categories as $cat): ?>
-                    <option value="<?php echo htmlspecialchars($cat->name); ?>" <?php if ($cat->nombre == $funko->categoryName) echo 'selected'; ?>>
-                        <?php echo htmlspecialchars($cat->name); ?>
+                    <option value="<?php echo htmlspecialchars_decode($cat->name); ?>" <?php if ($cat->name == $funko->categoryName) echo 'selected'; ?>>
+                        <?php echo htmlspecialchars_decode($cat->name); ?>
                     </option>
                 <?php endforeach; ?>
             </select>

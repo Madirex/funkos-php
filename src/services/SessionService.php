@@ -158,15 +158,6 @@ class SessionService
     }
 
     /**
-     * Devuelve el mensaje de bienvenida
-     * @return string Devuelve el mensaje de bienvenida
-     */
-    public function getWelcomeMessage()
-    {
-        return "Listado de Funkos";
-    }
-
-    /**
      * Devuelve el nombre de usuario
      * @return mixed Devuelve el nombre de usuario
      */

@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $newName = $funko->uuid . '.' . $extension;
             move_uploaded_file($tmpPath, $uploadDir . $newName);
             $funko->image = $config->uploadUrl . $newName;
-            $funkosService->update($funko);
+            $funkosService->update($funko, true);
 
             header('Location: update-image.php?id=' . $id);
             exit;

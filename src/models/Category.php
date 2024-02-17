@@ -25,7 +25,7 @@ class Category
      */
     public function __construct($id = null, $name = null, $createdAt = null, $updatedAt = null, $isDeleted = null)
     {
-        $this->id = $id;
+        $this->id = $id ? $id : $this->generateUUID();
         $this->name = $name;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;

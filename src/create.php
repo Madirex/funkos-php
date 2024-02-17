@@ -16,10 +16,7 @@ require_once __DIR__ . '/services/CategoriesService.php';
 
 $session = SessionService::getInstance();
 if (!$session->isAdmin()) {
-    echo "<script type='text/javascript'>
-            alert('No tienes permisos para crear un Funko');
-            window.location.href = 'index.php';
-          </script>";
+    header("Location: index.php?error=permission");
     exit;
 }
 
@@ -30,10 +27,10 @@ $categories = $categoriesService->findAll();
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+    $description = trim(filter_input(INPUT_POST, 'description', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     $stock = filter_input(INPUT_POST, 'stock', FILTER_SANITIZE_NUMBER_INT);
-    $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_STRING);
+    $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     $category = $categoriesService->findByName($category);
 
@@ -69,28 +66,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Guardamos el funko
         try {
             $funkosService->save($funko);
-            echo "<script type='text/javascript'>
-                alert('Funko creado correctamente');
-                window.location.href = 'index.php';
-                </script>";
+            header("Location: index.php?created=true");
+            exit;
         } catch (Exception $e) {
             $error = 'Error en el sistema. Por favor intente más tarde.';
+            echo "<div class='error-banner' id='errorBanner'>$error</div>";
         }
+    }  else {
+        echo "<div class='error-banner' id='errorBanner'>Error: " . implode(', ', $errors) . "</div>";
     }
 }
 ?>
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Crear Funko</title>
     <?php include 'head_styles.php'; ?>
 </head>
 <body>
-<div class="container">
     <?php require_once 'header.php'; ?>
+<div class="container" style="margin-top: 40px; margin-bottom: 40px;">
     <h1>Crear Funko</h1>
 
     <form action="create.php" method="post">
@@ -125,8 +123,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select class="form-control" id="category" name="category" required>
                 <option value="">Seleccione una categoría</option>
                 <?php foreach ($categories as $cat): ?>
-                    <option value="<?php echo htmlspecialchars($cat->name); ?>">
-                        <?php echo htmlspecialchars($cat->name); ?>
+                    <option value="<?php echo htmlspecialchars_decode($cat->name); ?>">
+                        <?php echo htmlspecialchars_decode($cat->name); ?>
                     </option>
                 <?php endforeach; ?>
             </select>

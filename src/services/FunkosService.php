@@ -27,16 +27,23 @@ class FunkosService
 
     /**
      * Devuelve todos los Funkos con el nombre de la categoría
-     * @param null $searchTerm String Término de búsqueda
+     * @param string|null $searchTerm String Término de búsqueda
      * @return array Devuelve un array con todos los funkos
      */
     public function findAllWithCategoryName($searchTerm = null)
     {
-        $sql = "SELECT p.*, c.name AS category_name FROM funkos p LEFT JOIN categories c ON p.category_id = c.id";
-        $sql .= " ORDER BY p.id ASC";
+        $sql = "SELECT f.*, c.name AS category_name FROM funkos f LEFT JOIN categories c ON f.category_id = c.id";
+
+        if ($searchTerm) {
+            $sql .= " WHERE LOWER(f.description) LIKE LOWER(:searchTerm)";
+        }
+
+        $sql .= " ORDER BY f.id ASC";
+
         $stmt = $this->pdo->prepare($sql);
 
         if ($searchTerm) {
+            $searchTerm = "%$searchTerm%";
             $stmt->bindValue(':searchTerm', $searchTerm, PDO::PARAM_STR);
         }
 
@@ -116,23 +123,39 @@ class FunkosService
     /**
      * Actualiza un funko
      * @param Funko $funko Funko a actualizar
+     * @param bool $updateImage Indica si se debe actualizar la imagen
      * @return bool Devuelve true si el funko se ha actualizado correctamente o false si no se ha podido actualizar
      */
-    public function update(Funko $funko)
+    public function update(Funko $funko, bool $updateImage = false)
     {
         $sql = "UPDATE funkos SET
             description = :description,
-            image = :image,
             price = :price,
             stock = :stock,
             category_id = :category_id,
             updated_at = :updated_at
             WHERE id = :id";
 
+        if ($updateImage) {
+            $sql = "UPDATE funkos SET
+            image = :image,
+            description = :description,
+            price = :price,
+            stock = :stock,
+            category_id = :category_id,
+            updated_at = :updated_at
+            WHERE id = :id";
+        }
+        
+
         $stmt = $this->pdo->prepare($sql);
 
         $stmt->bindValue(':description', $funko->description, PDO::PARAM_STR);
-        $stmt->bindValue(':image', $funko->image, PDO::PARAM_STR);
+
+        if ($updateImage) {
+            $stmt->bindValue(':image', $funko->image, PDO::PARAM_STR);
+        }
+
         $stmt->bindValue(':price', $funko->price, PDO::PARAM_STR);
         $stmt->bindValue(':stock', $funko->stock, PDO::PARAM_INT);
         $stmt->bindValue(':category_id', $funko->categoryId, PDO::PARAM_INT);

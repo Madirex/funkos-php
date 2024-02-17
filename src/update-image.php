@@ -13,10 +13,7 @@ require_once __DIR__ . '/models/Funko.php';
 
 $session = SessionService::getInstance();
 if (!$session->isAdmin()) {
-    echo "<script type='text/javascript'>
-            alert('No tienes permisos para modificar el Funko');
-            window.location.href = 'index.php';
-          </script>";
+    header("Location: index.php?error=permission");
     exit;
 }
 
@@ -31,10 +28,8 @@ if ($id === false) {
     $funkosService = new FunkosService($config->db);
     $funko = $funkosService->findById($id);
     if ($funko === null) {
-        echo "<script type='text/javascript'>
-                alert('No existe el Funko');
-                window.location.href = 'index.php';
-                </script>";
+        echo "<div class='error-banner' id='errorBanner'>No existe el Funko</div>";
+        exit;
     }
 }
 ?>
@@ -47,17 +42,17 @@ if ($id === false) {
     <?php include 'head_styles.php'; ?>
 </head>
 <body>
-<div class="container">
     <?php require_once 'header.php'; ?>
+<div class="container">
 
     <h1>Actualizar Imagen Funko</h1>
 
     <dl class="row">
         <dt class="col-sm-2">ID:</dt>
-        <dd class="col-sm-10"><?php echo htmlspecialchars($funko->id); ?></dd>
+        <dd class="col-sm-10"><?php echo htmlspecialchars_decode($funko->id); ?></dd>
         <dt class="col-sm-2">Imagen:</dt>
         <dd class="col-sm-10"><img alt="Funko Image" class="img-fluid"
-                                   src="<?php echo htmlspecialchars($funko->image); ?>"></dd>
+                                   src="<?php echo htmlspecialchars_decode($funko->image); ?>"></dd>
     </dl>
 
     <form action="update_image_file.php" enctype="multipart/form-data" method="post">

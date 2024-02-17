@@ -74,4 +74,36 @@ class UsersService
             $roles
         );
     }
+
+    /**
+     * Creación de usuario
+     * @param $username String Nombre de usuario
+     * @param $password String Contraseña del usuario
+     * @param $repeatPassword String Repetición de la contraseña
+     * @param $name String Nombre del usuario
+     * @param $surnames String Apellidos del usuario
+     * @param $email String Email del usuario
+     * @return User|null Devuelve el usuario creado o null si no se ha podido crear
+     */
+    public function createUser($username, $password, $repeatPassword, $name, $surnames, $email)
+    {
+
+        if ($password !== $repeatPassword) {
+            throw new Exception('Las contraseñas no coinciden');
+        }
+
+        $stmt = $this->db->prepare("INSERT INTO users (username, password, name, surnames, email) VALUES (:username, :password, :name, :surnames, :email)");
+        $stmt->bindParam(':username', $username);
+
+        //cifrar contraseña
+        $password = password_hash($password, PASSWORD_DEFAULT);
+        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':surnames', $surnames);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        
+        //retornar el User
+        return $this->findUserByUsername($username);
+    }
 }

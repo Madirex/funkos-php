@@ -14,10 +14,7 @@ require_once __DIR__ . '/services/SessionService.php';
 
 $session = SessionService::getInstance();
 if (!$session->isAdmin()) {
-    echo "<script type='text/javascript'>
-            alert('No tienes permisos para eliminar un funko');
-            window.location.href = 'index.php';
-          </script>";
+    header("Location: index.php?error=permission");
     exit;
 }
 
@@ -44,9 +41,6 @@ if ($id === false) {
             }
         }
         $funkosService->deleteById($id);
-        echo "<script type='text/javascript'>
-                alert('Funko eliminado correctamente');
-                window.location.href = 'index.php';
-                </script>";
+        header("Location: index.php?removed=true");
     }
 }

@@ -1,15 +1,14 @@
 <?php
 
 use config\Config;
-use services\FunkosService;
+use services\CategoriesService;
 use services\SessionService;
 
 require_once 'vendor/autoload.php';
 
 require_once __DIR__ . '/services/SessionService.php';
 require_once __DIR__ . '/config/Config.php';
-require_once __DIR__ . '/services/FunkosService.php';
-require_once __DIR__ . '/models/Funko.php';
+require_once __DIR__ . '/services/CategoriesService.php';
 $session = $sessionService = SessionService::getInstance();
 ?>
 
@@ -17,19 +16,18 @@ $session = $sessionService = SessionService::getInstance();
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Funkos CRUD</title>
+    <title>Categories CRUD</title>
     <?php include 'head_styles.php'; ?>
 </head>
 <body>
     <?php require_once 'header.php'; ?>
 <div class="container" style="margin-top: 40px; margin-bottom: 40px;">
+<?php $config = Config::getInstance(); ?>
+<?php require_once 'banner_config.php'; ?>
 
-    <?php $config = Config::getInstance(); ?>
-    <?php require_once 'banner_config.php'; ?>
-
-<div id="funkoList">
-    <h1>Listado de Funkos</h1>
-    <form action="index.php" class="mb-3" method="get">
+<div id="categoryList">
+    <h1>Listado de categorías</h1>
+    <form action="index_categories.php" class="mb-3" method="get">
         <div class="input-group">
             <div class="input-group-append">
                 <input class="form-control" name="search" placeholder="Buscar..." type="text">
@@ -42,11 +40,9 @@ $session = $sessionService = SessionService::getInstance();
         <thead>
         <tr>
             <th>ID</th>
-            <th>Descripción</th>
-            <th>Categoría</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th>Imagen</th>
+            <th>Nombre</th>
+            <th>Fecha de creación</th>
+            <th>Fecha de actualización</th>
             <th>Acciones</th>
         </tr>
         </thead>
@@ -54,28 +50,21 @@ $session = $sessionService = SessionService::getInstance();
         <?php
         // Obtener el término de búsqueda si existe
         $searchTerm = $_GET['search'] ?? null;
-        $funkosService = new FunkosService($config->db);
-        $funkos = $funkosService->findAllWithCategoryName($searchTerm);
+        $CategoriesService = new CategoriesService($config->db);
+        $Categories = $CategoriesService->findAll($searchTerm);
         ?>
-        <?php foreach ($funkos as $funko): ?>
+        <?php foreach ($Categories as $category): ?>
             <tr>
-                <td><?php echo htmlspecialchars_decode($funko->id); ?></td>
-                <td><?php echo htmlspecialchars_decode($funko->description); ?></td>
-                <td><?php echo htmlspecialchars_decode($funko->categoryName); ?></td>
-                <td><?php echo htmlspecialchars_decode($funko->price); ?></td>
-                <td><?php echo htmlspecialchars_decode($funko->stock); ?></td>
-                <td>
-                    <img alt="Imagen del funko" height="50"
-                         src="<?php echo htmlspecialchars_decode($funko->image); ?>" width="50">
-                </td>
+                <td><?php echo htmlspecialchars_decode($category->id); ?></td>
+                <td><?php echo htmlspecialchars_decode($category->name); ?></td>
+                <td><?php echo htmlspecialchars_decode($category->createdAt); ?></td>
+                <td><?php echo htmlspecialchars_decode($category->updatedAt); ?></td>
                 <td>
                     <a class="btn btn-primary btn-sm" style="min-width: 80px;"
-                       href="details.php?id=<?php echo $funko->id; ?>">Detalles</a>
+                       href="details_categories.php?id=<?php echo $category->id; ?>">Detalles</a>
                     <a class="btn btn-secondary btn-sm" style="min-width: 80px;"
-                       href="update.php?id=<?php echo $funko->id; ?>">Editar</a>
-                    <a class="btn btn-info btn-sm" style="min-width: 80px;"
-                       href="update-image.php?id=<?php echo $funko->id; ?>">Imagen</a>
-                       <?php $deleteLink = $session->isAdmin() ? "delete.php?id={$funko->id}&confirm=1" : "index.php?error=permission"; ?>
+                       href="update_categories.php?id=<?php echo $category->id; ?>">Editar</a>
+                       <?php $deleteLink = $session->isAdmin() ? "delete_categories.php?id={$category->id}&confirm=1" : "index_categories.php?error=permission"; ?>
                        <a class="btn btn-danger btn-sm delete-btn" style="min-width: 80px;" data-toggle="modal" data-target="#confirmDeleteModal" 
                        data-delete-link="<?php echo $deleteLink; ?>">Eliminar</a>
 
@@ -103,7 +92,7 @@ $session = $sessionService = SessionService::getInstance();
         </tbody>
     </table>
 
-    <a class="btn btn-success" href="create.php">Nuevo Funko</a>
+    <a class="btn btn-success" href="create_categories.php">Nueva categoría</a>
  </div>
 
     <p class="mt-4 text-center" style="font-size: smaller;">

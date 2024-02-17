@@ -7,7 +7,7 @@ namespace models;
  */
 class Funko
 {
-    public static $IMAGE_DEFAULT = 'https://www.madirex.com/favicon.ico';
+    public static $IMAGE_DEFAULT = 'images/funkos.bmp';
     private $id;
     private $uuid;
     private $description;

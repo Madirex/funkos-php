@@ -1,0 +1,81 @@
+footer{
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(to bottom, #101864, #060620);
+    color: #fff;
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+header{
+    background: linear-gradient(to top, #101864, #060620);
+}
+
+#navbarNav{
+    text-align: center;
+}
+
+div.nav-username{
+    color: #fff;
+    font-weight: bold;
+    font-size: 20px;
+    padding-top: 10px;
+}
+
+
+/* banners */
+.error-banner {
+    background-color: #f44336;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    animation: slideIn 0.5s ease-out;
+}
+
+.info-banner {
+    background-color: #2196F3;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    animation: slideIn 0.5s ease-out;
+}
+
+.close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-100%);
+    }
+}
+
+.hide-banner {
+    animation: slideOut 0.5s ease-in;
+}
