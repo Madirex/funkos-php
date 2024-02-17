@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $funko->categoryId = $category->id;
 
         try {
-            $funkosService->update($funko);
+            $funkosService->update($funko ,false);
             header("Location: index.php?updated=true");
             exit();
         } catch (Exception $e) {

@@ -123,23 +123,40 @@ class FunkosService
     /**
      * Actualiza un funko
      * @param Funko $funko Funko a actualizar
+     * @param bool $updateImage Indica si se debe actualizar la imagen
      * @return bool Devuelve true si el funko se ha actualizado correctamente o false si no se ha podido actualizar
      */
-    public function update(Funko $funko)
+    public function update(Funko $funko, bool $updateImage = false)
     {
+
         $sql = "UPDATE funkos SET
             description = :description,
-            image = :image,
             price = :price,
             stock = :stock,
             category_id = :category_id,
             updated_at = :updated_at
             WHERE id = :id";
 
+        if ($updateImage) {
+            $sql = "UPDATE funkos SET
+            image = :image,
+            description = :description,
+            price = :price,
+            stock = :stock,
+            category_id = :category_id,
+            updated_at = :updated_at
+            WHERE id = :id";
+        }
+        
+
         $stmt = $this->pdo->prepare($sql);
 
         $stmt->bindValue(':description', $funko->description, PDO::PARAM_STR);
-        $stmt->bindValue(':image', $funko->image, PDO::PARAM_STR);
+
+        if ($updateImage) {
+            $stmt->bindValue(':image', $funko->image, PDO::PARAM_STR);
+        }
+
         $stmt->bindValue(':price', $funko->price, PDO::PARAM_STR);
         $stmt->bindValue(':stock', $funko->stock, PDO::PARAM_INT);
         $stmt->bindValue(':category_id', $funko->categoryId, PDO::PARAM_INT);
