@@ -35,6 +35,14 @@ $session = $sessionService = SessionService::getInstance();
     </div>
     ';}
 
+    // Mostrar el banner de creación
+    else if (isset($_GET['created']) && $_GET['created'] === 'true') {
+        echo '<div class="info-banner" id="bannerInfo">
+<span class="close-btn" onclick="closeBanner()">&times;</span>
+        Elemento creado correctamente
+    </div>
+    ';}
+
     // Mostrar el banner de actualización
     else if (isset($_GET['updated']) && $_GET['updated'] === 'true') {
         echo '<div class="info-banner" id="bannerInfo">
@@ -113,8 +121,27 @@ $session = $sessionService = SessionService::getInstance();
                     <a class="btn btn-info btn-sm" style="min-width: 80px;"
                        href="update-image.php?id=<?php echo $funko->id; ?>">Imagen</a>
                        <?php $deleteLink = $session->isAdmin() ? "delete.php?id={$funko->id}&confirm=1" : "index.php?error=permission"; ?>
-                        <a class="btn btn-danger btn-sm" style="min-width: 80px;"
-                        href="<?php echo $deleteLink; ?>" <?php if ($session->isAdmin()) echo "onclick=\"return confirm('¿Estás seguro de que deseas eliminar este Funko?');\""; ?>>Eliminar</a>
+                       <a class="btn btn-danger btn-sm delete-btn" style="min-width: 80px;" data-toggle="modal" data-target="#confirmDeleteModal" 
+                       data-delete-link="<?php echo $deleteLink; ?>">Eliminar</a>
+
+                       <!-- Lógica de eliminación -->
+                       <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            var deleteButtons = document.querySelectorAll('.delete-btn');
+
+                            deleteButtons.forEach(function(button) {
+                            button.addEventListener('click', function() {
+                                var deleteLink = button.getAttribute('data-delete-link');
+                                var modal = document.getElementById('confirmDeleteModal');
+                                var confirmButton = modal.querySelector('.btn-danger');
+
+                                confirmButton.setAttribute('href', deleteLink);
+                            });
+                            });
+                        });
+                        </script>
+
+
                 </td>
             </tr>
         <?php endforeach; ?>
@@ -142,5 +169,27 @@ $session = $sessionService = SessionService::getInstance();
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
         crossorigin="anonymous"></script>
+
+<!-- Modal de Confirmación de Eliminación -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de que deseas eliminar este elemento?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <a id="deleteLink" href="#" class="btn btn-danger">Eliminar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
