@@ -1,135 +1,95 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-
-use services\CategoriesService;
 use models\Category;
+use PHPUnit\Framework\TestCase;
+use services\CategoriesService;
 
-require_once __DIR__ . '/../src/services/CategoriesService.php';
-require_once __DIR__ . '/../src/models/Category.php';
-
-/**
- * Tests
- */
 class CategoriesServiceTest extends TestCase
 {
-    /**
-     * Test findAll
-     */
+    protected $pdo;
+    protected $categoriesService;
+
+    protected function setUp(): void
+    {
+        $this->pdo = $this->createMock(PDO::class);
+        $this->categoriesService = new CategoriesService($this->pdo);
+    }
+
     public function testFindAll()
     {
-       $categoriesMock = $this->createMock(CategoriesService::class);
-       $categoriesMock->expects($this->exactly(4))
-           ->method('findAll')
-           ->willReturn([
-               new Category(1, 'Category 1', '2021-01-01', '2021-01-01', false),
-               new Category(2, 'Category 2', '2021-01-01', '2021-01-01', false),
-               new Category(3, 'Category 3', '2021-01-01', '2021-01-01', false),
-           ]);
+        $expectedData = [
+            ['id' => 1, 'name' => 'Category 1', 'created_at' => '2022-01-01', 'updated_at' => '2022-01-01', 'is_deleted' => false],
+            ['id' => 2, 'name' => 'Category 2', 'created_at' => '2022-01-02', 'updated_at' => '2022-01-02', 'is_deleted' => false],
+        ];
 
-        $this->assertEquals(3, count($categoriesMock->findAll()));
-        $this->assertEquals('Category 1', $categoriesMock->findAll()[0]->name);
-        $this->assertEquals('Category 2', $categoriesMock->findAll()[1]->name);
-        $this->assertEquals('Category 3', $categoriesMock->findAll()[2]->name);
+        $statement = $this->createMock(PDOStatement::class);
+        $statement->method('fetch')->willReturnOnConsecutiveCalls(...$expectedData);
+        $this->pdo->method('prepare')->willReturn($statement);
+
+        $result = $this->categoriesService->findAll();
+
+        $this->assertCount(2, $result);
     }
 
-    /**
-     * Test FindAll With Search Term
-     */
-    public function testFindAllWithSearchTerm()
+    public function testFindById_NonExistingCategory_ReturnsFalse()
     {
-        $categoriesMock = $this->createMock(CategoriesService::class);
-        $categoriesMock->expects($this->exactly(2))
-            ->method('findAll')
-            ->with('Category 1')
-            ->willReturn([
-                new Category(1, 'Category 1', '2021-01-01', '2021-01-01', false),
-            ]);
-        
-        $this->assertEquals(1, count($categoriesMock->findAll('Category 1')));
-        $this->assertEquals('Category 1', $categoriesMock->findAll('Category 1')[0]->name);
+        $statement = $this->createMock(PDOStatement::class);
+        $statement->method('fetch')->willReturn(false);
+        $this->pdo->method('prepare')->willReturn($statement);
+
+        $category = $this->categoriesService->findById(999);
+
+        $this->assertFalse($category);
     }
 
-    /**
-     * Test FindByName
-     */
-    public function testFindByName()
+    public function testDeleteById_ExistingCategory_ReturnsTrue()
     {
-        $categoriesMock = $this->createMock(CategoriesService::class);
-        $categoriesMock->expects($this->exactly(1))
-            ->method('findByName')
-            ->willReturn(new Category(1, 'Category 1', '2021-01-01', '2021-01-01', false));
+        $statement = $this->createMock(PDOStatement::class);
+        $statement->method('execute')->willReturn(true);
+        $this->pdo->method('prepare')->willReturn($statement);
 
-        $this->assertEquals('Category 1', $categoriesMock->findByName('Category 1')->name);
+        $result = $this->categoriesService->deleteById(1);
+
+        $this->assertTrue($result);
     }
 
-    /**
-     * Test FindById
-     */
-    public function testFindById()
+    public function testDeleteById_NonExistingCategory_ReturnsFalse()
     {
-        $categoriesMock = $this->createMock(CategoriesService::class);
-        $categoriesMock->expects($this->exactly(1))
-            ->method('findById')
-            ->willReturn(new Category(1, 'Category 1', '2021-01-01', '2021-01-01', false));
+        $statement = $this->createMock(PDOStatement::class);
+        $statement->method('execute')->willReturn(false);
+        $this->pdo->method('prepare')->willReturn($statement);
 
-        $this->assertEquals('Category 1', $categoriesMock->findById(1)->name);
+        $result = $this->categoriesService->deleteById(999);
+
+        $this->assertFalse($result);
     }
 
-    /**
-     * Test FindByName Returns False
-     */
-    public function testFindByNameReturnsFalse()
+    //test de update
+    public function testUpdate_ExistingCategory_ReturnsTrue()
     {
-        $categoriesMock = $this->createMock(CategoriesService::class);
-        $categoriesMock->expects($this->exactly(1))
-            ->method('findByName')
-            ->willReturn(false);
+        $category = new Category(1, 'Category 1', '2022-01-01', '2022-01-01', false);
 
-        $this->assertEquals(false, $categoriesMock->findByName('Category 1'));
+        $statement = $this->createMock(PDOStatement::class);
+        $statement->method('execute')->willReturn(true);
+        $this->pdo->method('prepare')->willReturn($statement);
+
+        $result = $this->categoriesService->update($category);
+
+        $this->assertTrue($result);
     }
 
-    /**
-     * Test DeleteById
-     */
-    public function testDeleteById()
+    //test de save
+    public function testSave_NewCategory_ReturnsTrue()
     {
-        $categoriesMock = $this->createMock(CategoriesService::class);
-        $categoriesMock->expects($this->exactly(1))
-            ->method('deleteById')
-            ->willReturn(true);
+        $category = new Category(null, 'Category 1', '2022-01-01', '2022-01-01', false);
 
-        $this->assertEquals(true, $categoriesMock->deleteById(1));
-        $this->assertEquals(false, $categoriesMock->findById(1));
+        $statement = $this->createMock(PDOStatement::class);
+        $statement->method('execute')->willReturn(true);
+        $this->pdo->method('prepare')->willReturn($statement);
+
+        $result = $this->categoriesService->save($category);
+
+        $this->assertTrue($result);
     }
 
-    /**
-     * Test Save
-     */
-    public function testSave()
-    {
-        $category = new Category(1, 'Category 1', '2021-01-01', '2021-01-01', false);
-        $categoriesMock = $this->createMock(CategoriesService::class);
-        $categoriesMock->expects($this->exactly(1))
-            ->method('save')
-            ->with($category)
-            ->willReturn(true);
-
-        $this->assertEquals(true, $categoriesMock->save($category));
-    }
-
-    /**
-     * Test Update
-     */
-    public function testUpdate()
-    {
-        $category = new Category(1, 'Category 1', '2021-01-01', '2021-01-01', false);
-        $categoriesMock = $this->createMock(CategoriesService::class);
-        $categoriesMock->expects($this->exactly(1))
-            ->method('update')
-            ->with($category)
-            ->willReturn(true);
-
-        $this->assertEquals(true, $categoriesMock->update($category));
-    }
 }
