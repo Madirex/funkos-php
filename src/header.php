@@ -22,17 +22,21 @@ $username = $session->isLoggedIn() ? $session->getUserName() : 'Invitado';
                 <li class="nav-item">
                     <a class="nav-link" href="index.php">Funkos</a>
                 </li>
+                <?php if ($session->isAdmin()): ?>
                 <li class="nav-item">
                     <a class="nav-link" href="create.php">Nuevo Funko</a>
                 </li>
+                <?php endif; ?>
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" href="index_categories.php">Categorías</a>
                 </li>
+                <?php if ($session->isAdmin()): ?>
                 <li class="nav-item">
                     <a class="nav-link" href="create_categories.php">Nueva Categoría</a>
                 </li>
+                <?php endif; ?>
             </ul>
             <ul class="navbar-nav ml-auto" style="flex-direction: column;">
             <li class="nav-item">

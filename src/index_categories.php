@@ -62,6 +62,7 @@ $session = $sessionService = SessionService::getInstance();
                 <td>
                     <a class="btn btn-primary btn-sm" style="min-width: 80px;"
                        href="details_categories.php?id=<?php echo $category->id; ?>">Detalles</a>
+                    <?php if ($session->isAdmin()): ?>
                     <a class="btn btn-secondary btn-sm" style="min-width: 80px;"
                        href="update_categories.php?id=<?php echo $category->id; ?>">Editar</a>
                        <?php $deleteLink = $session->isAdmin() ? "delete_categories.php?id={$category->id}&confirm=1" : "index_categories.php?error=permission"; ?>
@@ -84,15 +85,16 @@ $session = $sessionService = SessionService::getInstance();
                             });
                         });
                         </script>
-
-
+                    <?php endif; ?>
                 </td>
             </tr>
         <?php endforeach; ?>
         </tbody>
     </table>
 
+    <?php if ($session->isAdmin()): ?>
     <a class="btn btn-success" href="create_categories.php">Nueva categoría</a>
+    <?php endif; ?>
  </div>
 
     <p class="mt-4 text-center" style="font-size: smaller;">

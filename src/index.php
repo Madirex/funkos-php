@@ -71,6 +71,9 @@ $session = $sessionService = SessionService::getInstance();
                 <td>
                     <a class="btn btn-primary btn-sm" style="min-width: 80px;"
                        href="details.php?id=<?php echo $funko->id; ?>">Detalles</a>
+
+                    <!-- Solo los administradores pueden editar y eliminar -->
+                    <?php if ($session->isAdmin()): ?>
                     <a class="btn btn-secondary btn-sm" style="min-width: 80px;"
                        href="update.php?id=<?php echo $funko->id; ?>">Editar</a>
                     <a class="btn btn-info btn-sm" style="min-width: 80px;"
@@ -96,14 +99,17 @@ $session = $sessionService = SessionService::getInstance();
                         });
                         </script>
 
-
+                    <?php endif; ?>
                 </td>
+
             </tr>
         <?php endforeach; ?>
         </tbody>
     </table>
 
+    <?php if ($session->isAdmin()): ?>
     <a class="btn btn-success" href="create.php">Nuevo Funko</a>
+    <?php endif; ?>
  </div>
 
     <p class="mt-4 text-center" style="font-size: smaller;">
